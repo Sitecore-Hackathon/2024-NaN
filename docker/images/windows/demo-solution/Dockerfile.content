@@ -1,0 +1,41 @@
+# escape=`
+
+ARG BASE_IMAGE
+ARG BUILD_IMAGE
+
+FROM ${BUILD_IMAGE} as build
+
+ARG INTERNAL_NUGET_SOURCE
+ARG INTERNAL_NUGET_SOURCE_USERNAME="VSTS"
+ARG INTERNAL_NUGET_SOURCE_PASSWORD
+ARG PRERELEASE=False
+
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+COPY build* nuget.config publishsettings.targets Sitecore.Demo.Platform.sln ./build/
+COPY src/ ./src
+
+RUN Copy-Item ./build/* .
+
+RUN nuget restore Sitecore.Demo.Platform.sln
+
+RUN msbuild Sitecore.Demo.Platform.sln /p:DeployOnBuild=true /p:PublishProfile=DockerBuild /p:Configuration=Release
+
+RUN (Get-Content "C:\src\Project\Global\code\App_Config\Include\Project\z.DevSettings.config").replace('C:\Projects\Sitecore.Demo.Platform\items', 'C:\items') | Set-Content "C:\src\Project\Global\code\App_Config\Include\Project\z.DevSettings.config"
+
+RUN New-Item -ItemType Directory -Path /out/demo-standalone/transforms
+
+RUN New-Item -ItemType Directory -Path /out/demo-standalone/transforms/App_Config
+
+RUN Copy-Item /out/demo-standalone/web.config.xdt /out/demo-standalone/transforms/web.config.xdt
+
+RUN Copy-Item /out/demo-standalone/App_Config/ConnectionStrings.config.xdt /out/demo-standalone/transforms/App_Config/ConnectionStrings.config.xdt
+
+RUN Copy-Item /out/demo-standalone/App_Config/Layers.config.project.website.xdt /out/demo-standalone/transforms/App_Config/Layers.config.project.website.xdt
+
+COPY FrontEnd/ /out/demo-standalone/App_Data/FrontEnd
+
+FROM ${BASE_IMAGE} as asset
+
+COPY --from=build /out/demo-standalone /solution/cm
+COPY --from=build /out/demo-standalone /solution/cd

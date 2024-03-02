@@ -1,52 +1,45 @@
+[Oo]bj/
+src/**/[Bb]in/
+**/bin/Debug/
+.nuget/
+_ReSharper.*
+*.user
+*.cache
+*.suo
+*.userprefs
+*.sln.ide
+license.xml
+lib/Modules/*
+.vs
+**/node_modules
+.vscode
+*.log
+*.zip
+*.user.config
+*.user.js
+*.user.targets
+packages/
+*.bak
+/.github
+tools/*
+!tools/packages.config
+/data
+!/data/**/.gitkeep
+/lib
+/Build/**/bin/
+/Build/**/obj/
+publish
+*.metaproj*
+/FrontEnd/*/styles
+items/project/Global/Themes/Demo SXA Sites/*/styles/pre-optimized-min.yml
+items/project/Global/Themes/Demo SXA Sites/*/scripts/pre-optimized-min.yml
+/out
+/Deploy
+FrontEnd/*/scripts/pre-optimized-min.js
+
 # may contain OAuth secrets, do not commit
 .sitecore/user.json
 
 # NuGet cache for Sitecore CLI
 .sitecore/package-cache/
-
-# Ephemeral index caches used by serialization, do not commit
-.scindex
-
-# Don't commit packages
-*.itempackage
-*.sicpackage
-
-
-# User-specific files
-*.rsuser
-*.suo
-*.user
-*.userosscache
-*.sln.docstates
-
-#Ignore thumbnails created by Windows
-Thumbs.db
-#Ignore files built by Visual Studio
-*.obj
-*.exe
-*.pdb
-*.user
-*.aps
-*.pch
-*.vspscc
-*_i.c
-*_p.c
-*.ncb
-*.suo
-*.tlb
-*.tlh
-*.bak
-*.cache
-*.ilk
-*.log
-[Bb]in
-[Dd]ebug*/
-*.lib
-*.sbr
-obj/
-[Rr]elease*/
-_ReSharper*/
-[Tt]est[Rr]esult*
-.vs/
-#Nuget packages folder
-packages/
+.idea
